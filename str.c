@@ -5,6 +5,8 @@
 
 void str_free(char** strptr)
 {
+	free(*strptr);
+	(*strptr) = NULL;
 }
 
 char* str_cpy(char** dst, const char* src)
