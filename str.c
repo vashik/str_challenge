@@ -14,18 +14,20 @@ char* str_cpy(char** dst, const char* src)
 	char *newdst;
 
 	if (src == NULL) {
-		return olddst;
+		newdst = NULL;
+	} else {
+		srcsize = strlen(src);
+		newdst = (char*)malloc(srcsize+1);
+		if (newdst == NULL) {
+			return NULL;
+		}	
+		memmove(newdst, src, srcsize + 1);
 	}
-	srcsize = strlen(src);
-	newdst = (char*)malloc(srcsize+1);
-	if (newdst == NULL) {
-		return NULL;
-	}	
-	memmove(newdst, src, srcsize + 1);
 
 	if (olddst != NULL) {
 		str_free(dst);
 	}
+
 	(*dst) = newdst;
 	return newdst;
 }
