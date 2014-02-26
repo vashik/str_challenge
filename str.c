@@ -14,10 +14,12 @@ char* str_cpy(char** dst, const char* src)
 	size_t dstsize, srcsize, newdstsize;
 	char *olddst = *dst;
 	char *newdst;
-
+#ifdef STR_CHECK_NULL_SRC
 	if (src == NULL) {
 		newdst = NULL;
-	} else {
+	} else 
+#endif
+	{
 		srcsize = strlen(src);
 		newdst = (char*)malloc(srcsize+1);
 		if (newdst == NULL) {
@@ -40,12 +42,16 @@ char* str_cat(char** dst, const char* src)
 	char *olddst = *dst;
 	char *newdst;
 
+#ifdef STR_CHECK_NULL_SRC
 	if (src == NULL) {
 		return olddst;
 	}
+#endif
+#ifdef STR_CHECK_NULL_DST
 	if (dst == NULL || olddst == NULL) {
 		return olddst;
 	}
+#endif
 	dstsize = strlen(olddst);
 	srcsize = strlen(src);
 	newdstsize = dstsize + srcsize;
