@@ -55,7 +55,7 @@ char* str_cat(char** dst, const char* src)
 	dstsize = strlen(olddst);
 	srcsize = strlen(src);
 	newdstsize = dstsize + srcsize;
-	if (newdstsize = 0) {
+	if (newdstsize == 0) {
 		return olddst;
 	}		
 	newdst = (char*)malloc(newdstsize + 1);
