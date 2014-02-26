@@ -1,11 +1,53 @@
-#include "str.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stddef.h>
+#include "str.h"
 
+typedef struct {
+	size_t size;
+	char  str;
+} str_t;
+
+char* str_alloc(size_t len)
+{
+	str_t* newstr = malloc(len + sizeof(str_t) + 1);
+
+	if (newstr == NULL) {
+		return NULL;
+	}
+
+	newstr->size = len;
+	return &(newstr->str);
+}
+
+char* str_realloc(char* s, size_t newlen)
+{
+	str_t* str = (str_t*)(s - offsetof(str_t, str));
+	size_t len = str->size;
+	str_t* newstr;
+	char*  news;
+
+	if (newlen <= len) {
+		return s;
+	}
+
+	news = str_alloc(newlen);
+	if (news == NULL) {
+		return NULL;
+	}
+	newstr = (str_t*)(s - offsetof(str_t, str));
+	newstr->size = newlen;
+
+	memmove(news, s, len + 1);
+	
+	return news;
+}
 
 void str_free(char** strptr)
 {
-	free(*strptr);
+	char* s = *strptr;
+	str_t *str = (str_t*)(s - offsetof(str_t, str));
+	free(str);
 	(*strptr) = NULL;
 }
 
@@ -21,15 +63,16 @@ char* str_cpy(char** dst, const char* src)
 #endif
 	{
 		srcsize = strlen(src);
-		newdst = (char*)malloc(srcsize+1);
+		if (olddst == NULL) {
+			newdst = str_alloc(srcsize);
+		} else {
+			newdst = str_realloc(olddst, srcsize);
+		}
 		if (newdst == NULL) {
 			return NULL;
 		}	
+		
 		memmove(newdst, src, srcsize + 1);
-	}
-
-	if (olddst != NULL) {
-		str_free(dst);
 	}
 
 	(*dst) = newdst;
@@ -58,13 +101,11 @@ char* str_cat(char** dst, const char* src)
 	if (newdstsize == 0) {
 		return olddst;
 	}		
-	newdst = (char*)malloc(newdstsize + 1);
+	newdst = str_realloc(olddst, newdstsize);
 	if (newdst == NULL) {
 		return NULL;
 	}	
-	memmove(newdst, olddst, dstsize);
 	memmove(newdst+dstsize, src, srcsize + 1); 
-	str_free(dst);
 	(*dst) = newdst;
 	return newdst;
 }
