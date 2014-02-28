@@ -15,18 +15,18 @@ char* str_cpy(char** dst, const char* src)
     char *olddst = *dst;
     char *newdst;
 #ifdef STR_CHECK_NULL_SRC
-    if (src == NULL)
+    if (src==NULL)
         newdst = NULL;
     else 
 #endif
     {
         srcsize = strlen(src);
         newdst = (char*)malloc(srcsize+1);
-        if (newdst == NULL)
+        if (newdst==NULL)
             return NULL;
         memmove(newdst, src, srcsize + 1);
     }
-    if (olddst != NULL)
+    if (olddst==NULL)
         str_free(dst);
     (*dst) = newdst;
     return newdst;
@@ -39,20 +39,20 @@ char* str_cat(char** dst, const char* src)
     char *newdst;
 
 #ifdef STR_CHECK_NULL_SRC
-    if (src == NULL)
+    if (src==NULL)
         return olddst;
 #endif
 #ifdef STR_CHECK_NULL_DST
-    if (dst == NULL || olddst == NULL)
+    if (dst==NULL || olddst==NULL)
         return olddst;
 #endif
     dstsize = strlen(olddst);
     srcsize = strlen(src);
     newdstsize = dstsize + srcsize;
-    if (newdstsize == 0)
+    if (newdstsize==0)
         return olddst;
     newdst = (char*)malloc(newdstsize + 1);
-    if (newdst == NULL)
+    if (newdst==NULL)
         return NULL;
     memmove(newdst, olddst, dstsize);
     memmove(newdst+dstsize, src, srcsize + 1); 
