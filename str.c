@@ -113,7 +113,7 @@ char* str_cat(char** dst, const char* src)
     if (dst==NULL)
         return NULL;
     else if(*dst == NULL)
-        return NULL; /* can changed to str_alloc() */
+        return NULL; /* can be changed to str_alloc() */
 #endif
 #ifdef STR_CHECK_NULL_SRC
     if (src==NULL)
