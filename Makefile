@@ -1,4 +1,4 @@
-CFLAGS=-g
+CFLAGS=-g -Wall
 CC=gcc
 all: strtest
 strtest: main.o str.o
