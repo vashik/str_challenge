@@ -47,14 +47,14 @@ char* str_cat(char** dst, const char* src)
 #endif
     dstsize = strlen(olddst);
     srcsize = strlen(src);
-    newdstsize = dstsize + srcsize;
+    newdstsize = dstsize+srcsize;
     if (newdstsize==0)
         return olddst;
-    newdst = (char*)malloc(newdstsize + 1);
+    newdst = (char*)malloc(newdstsize+1);
     if (newdst==NULL)
         return NULL;
     memmove(newdst, olddst, dstsize);
-    memmove(newdst+dstsize, src, srcsize + 1); 
+    memmove(newdst+dstsize, src, srcsize+1); 
     str_free(dst);
     *dst = newdst;
     return newdst;
