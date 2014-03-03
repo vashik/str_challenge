@@ -7,6 +7,7 @@
 
 #define STR_CHECK_NULL_SRC
 #define STR_CHECK_NULL_DST
+#define STR_CHECK_NULL_ALLOCS
 
 char* str_cpy(char**, const char*);
 char* str_cat(char**, const char*);

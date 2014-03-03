@@ -3,6 +3,9 @@
 #include <stddef.h>
 #include "str.h"
 
+#define STR_ALLOC_INC           32
+#define STR_ROUNDUP(A)          (((A)/STR_ALLOC_INC+1)*STR_ALLOC_INC)
+
 typedef struct {
     size_t size;
     char  str;
@@ -10,10 +13,13 @@ typedef struct {
 
 char* str_alloc(size_t len)
 {
-    str_t* newstr = malloc(len + sizeof(str_t) + 1);
+    size_t newlen = STR_ROUNDUP(sizeof(str_t)+len+1);
+    str_t* newstr = malloc(newlen);
+#ifdef STR_CHECK_NULL_ALLOCS
     if (newstr==NULL)
         return NULL;
-    newstr->size = len;
+#endif
+    newstr->size = newlen;
     return &(newstr->str);
 }
 
@@ -26,8 +32,10 @@ char* str_realloc(char* s, size_t newlen)
     if (newlen<=len)
         return s;
     news = str_alloc(newlen);
+#ifdef STR_CHECK_NULL_ALLOCS
     if (news == NULL)
         return NULL;
+#endif
     newstr = (str_t*)(s - offsetof(str_t, str));
     newstr->size = newlen;
     memmove(news, s, len + 1);
@@ -58,9 +66,11 @@ char* str_cpy(char** dst, const char* src)
             newdst = str_alloc(srcsize);
         else
             newdst = str_realloc(olddst, srcsize);
+#ifdef STR_CHECK_NULL_ALLOCS
         if (newdst==NULL)
             return NULL;
-        memmove(newdst, src, srcsize + 1);
+#endif
+        memmove(newdst, src, srcsize+1);
     }
     (*dst) = newdst;
     return newdst;
@@ -85,8 +95,10 @@ char* str_cat(char** dst, const char* src)
     if (newdstsize==0)
         return olddst;
     newdst = str_realloc(olddst, newdstsize);
+#ifdef STR_CHECK_NULL_ALLOCS
     if (newdst==NULL)
         return NULL;
+#endif
     memmove(newdst+dstsize, src, srcsize + 1); 
     (*dst) = newdst;
     return newdst;
