@@ -6,13 +6,12 @@
 void str_free(char** strptr)
 {
     free(*strptr);
-    (*strptr) = NULL;
+    *strptr = NULL;
 }
 
 char* str_cpy(char** dst, const char* src)
 {
     size_t dstsize, srcsize, newdstsize;
-    char *olddst = *dst;
     char *newdst;
 #ifdef STR_CHECK_NULL_SRC
     if (src==NULL)
@@ -24,11 +23,11 @@ char* str_cpy(char** dst, const char* src)
         newdst = (char*)malloc(srcsize+1);
         if (newdst==NULL)
             return NULL;
-        memmove(newdst, src, srcsize + 1);
+        memmove(newdst, src, srcsize+1);
     }
-    if (olddst==NULL)
+    if (*dst!=NULL)
         str_free(dst);
-    (*dst) = newdst;
+    *dst = newdst;
     return newdst;
 }
 
@@ -57,7 +56,7 @@ char* str_cat(char** dst, const char* src)
     memmove(newdst, olddst, dstsize);
     memmove(newdst+dstsize, src, srcsize + 1); 
     str_free(dst);
-    (*dst) = newdst;
+    *dst = newdst;
     return newdst;
 }
 
