@@ -11,7 +11,7 @@ void str_free(char** strptr)
 
 char* str_cpy(char** dst, const char* src)
 {
-    size_t dstsize, srcsize, newdstsize;
+    size_t srcsize;
     char *newdst;
 #ifdef STR_CHECK_NULL_SRC
     if (src==NULL)
@@ -20,7 +20,7 @@ char* str_cpy(char** dst, const char* src)
 #endif
     {
         srcsize = strlen(src);
-        newdst = (char*)malloc(srcsize+1);
+        newdst = malloc(srcsize+1);
         if (newdst==NULL)
             return NULL;
         memmove(newdst, src, srcsize+1);
@@ -50,7 +50,7 @@ char* str_cat(char** dst, const char* src)
     newdstsize = dstsize+srcsize;
     if (newdstsize==0)
         return olddst;
-    newdst = (char*)malloc(newdstsize+1);
+    newdst = malloc(newdstsize+1);
     if (newdst==NULL)
         return NULL;
     memmove(newdst, olddst, dstsize);
@@ -63,6 +63,7 @@ char* str_cat(char** dst, const char* src)
 
 int str_printf(char** dst, const char* fmt, ...)
 {
+    return 0;
 }
 
 
