@@ -1,4 +1,4 @@
-CFLAGS=-g
+CFLAGS=-g -Wall
 CC=gcc
 all: strtest
 strtest: main.o str.o
@@ -6,4 +6,4 @@ strtest: main.o str.o
 str.o: str.c str.h
 
 clean:
-	rm -f main.o strtest
+	rm -f main.o str.o strtest
